@@ -121,7 +121,7 @@ def rotatehorizontal(stream, angle1, angle2):
         angle1, angle2 = angle2, angle1
     if debugRot:
         print(stream)
-        print 'Angle1: ' + str(angle1) + ' Angle2: ' + str(angle2)
+        print('Angle1: ' + str(angle1) + ' Angle2: ' + str(angle2))
     theta_r1 = math.radians(angle1)
     theta_r2 = math.radians(angle2)
     swapSecond = False
@@ -130,7 +130,7 @@ def rotatehorizontal(stream, angle1, angle2):
 # if the components are swaped swap the matrix
     if theta_r1 > theta_r2 and swapSecond:
         if debugRot:
-            print 'Swap the components: ' + str((360. - angle1) - angle2)
+            print('Swap the components: ' + str((360. - angle1) - angle2))
         stream.sort(['channel'], reverse=True)
         theta_r1, theta_r2 = theta_r2, theta_r1
         print(stream)
@@ -155,7 +155,7 @@ def choptocommon(st):
     etime = min([tr.stats.endtime for tr in st])
     st.trim(starttime=stime, endtime=etime)
     if debug:
-        print 'starttime: '+str(stime)+' endtime: '+str(etime)
+        print('starttime: '+str(stime)+' endtime: '+str(etime))
     return st
 
 
@@ -169,7 +169,7 @@ def getstalist(sp, etime, net):
 # Pull the station info for blockette 50
                 stacall = blkt.station_call_letters.strip()
                 if debug:
-                    print "Here is a station in the dataless: " + stacall
+                    print("Here is a station in the dataless: " + stacall)
                 if type(blkt.end_effective_date) is str:
                     curdoy = strftime("%j", gmtime())
                     curyear = strftime("%Y", gmtime())
@@ -206,10 +206,10 @@ def readcmt(cmt, debug=False):
                             int(cmtline1[3]), int(cmtline1[4]),
                             int(cmtline1[5]), float(cmtline1[6]))
     if debug:
-        print 'Year:' + str(eventtime.year)
-        print 'Day:' + str(eventtime.julday)
-        print 'Hour:' + str(eventtime.hour)
-        print 'Minute:' + str(eventtime.minute)
+        print('Year:' + str(eventtime.year))
+        print('Day:' + str(eventtime.julday))
+        print('Hour:' + str(eventtime.hour))
+        print('Minute:' + str(eventtime.minute))
     return cmtlat, cmtlon, eventtime, tshift, hdur
 
 
@@ -251,10 +251,10 @@ def getdata(net, sta, eventtime, lents, debug=False):
             st += read(curfile, starttime=stime, endtime=etime)
         except:
             if debug:
-                print 'Unable to get data ' + curfile
+                print('Unable to get data ' + curfile)
     st.merge(fill_value='latest')
     if debug:
-        print 'We have data'
+        print('We have data')
     return st
     
 def fixdip(st, eventtime, sp, debug=False):
@@ -262,7 +262,7 @@ def fixdip(st, eventtime, sp, debug=False):
     for tr in st.select(component="Z"):
         dipval = getdip(tr, sp)
         if debug:
-            print 'Here is the dip value:' + str(dipval)
+            print('Here is the dip value:' + str(dipval))
         if dipval == 90.0:
             tr.data = -tr.data
     return st
@@ -311,7 +311,7 @@ def writestats(statfile, streamin, comp):
                 str(tr.stats.starttime.minute) + ":" + str(tr.stats.starttime.second) + "\n")
     except:    
         if debug:
-            print 'No residual for' + tr.stats.station + ' ' + 'LH' + comp    
+            print('No residual for' + tr.stats.station + ' ' + 'LH' + comp) 
     return
 
 
@@ -375,7 +375,7 @@ def procStream(st, sp, eventtime, tshift, freqmin, freqmax, corners, lents, hdur
             else:
                 paz=sp.get_paz(tr.id, eventtime)
                 if debug:
-                    print 'Here is the paz'
+                    print('Here is the paz')
                     print(paz)        
         except:
             print('Problem with response')
@@ -418,10 +418,10 @@ def pltStream(stream, pltHandle, component, cmtlat=None, cmtlon=None,
         lat = coord['latitude']
         lon = coord['longitude']
         if debug:
-            print "Latitude:" + str(lat)
-            print "Longitude:" + str(lon)
-            print "CMT Latitude:" + str(cmtlat)
-            print "CMT Longitude:" + str(cmtlon)
+            print("Latitude:" + str(lat))
+            print("Longitude:" + str(lon))
+            print("CMT Latitude:" + str(cmtlat))
+            print("CMT Longitude:" + str(cmtlon))
         dist = gps2dist_azimuth(float(cmtlat), float(cmtlon), lat, lon)
         bazi = "{0:.1f}".format(dist[2])
         dist = "{0:.1f}".format(0.0089932*dist[0]/1000.)
@@ -457,7 +457,7 @@ def pltStream(stream, pltHandle, component, cmtlat=None, cmtlon=None,
                     stream[0].stats.network + stream[0].stats.station +
                     str(starttime.year) + str(starttime.julday) +
                     str(starttime.hour) + str(starttime.minute) +
-                    '.jpg', format='jpeg', dpi=400)
+                    '.png', format='png', dpi=400)
         synplot.clear()
     return
 
@@ -492,7 +492,7 @@ if __name__ == "__main__":
     try:
         sp = Parser(datalessloc + net + ".dataless")
     except:
-        print "Can not read the dataless."
+        print("Can not read the dataless.")
         exit(0)
 
 # Run through each of the event CMTs
@@ -503,9 +503,9 @@ if __name__ == "__main__":
 
 # Read in the CMT solution from the synthetic directory
         if debug:
-            print "We are using local synthetics"
+            print("We are using local synthetics")
         if not os.path.isfile(synfile + '/CMTSOLUTION'):
-            print "No CMT found"
+            print("No CMT found")
             exit(0)
         cmt = tuple(open(synfile + '/CMTSOLUTION'))
         cmtlat, cmtlon, eventtime, tshift, hdur = readcmt(cmt)
@@ -526,15 +526,15 @@ if __name__ == "__main__":
 
         if parserval.sta:
             if debug: 
-                print "We are using a manual station list"
+                print("We are using a manual station list")
             stations = parserval.sta.split(",")
         else:
             stations = getstalist(sp, eventtime, net)
 
         if debug:
-            print "Here are the stations we found"    
+            print("Here are the stations we found") 
             for sta in stations:
-                print "Here is a station:" + sta
+                print("Here is a station:" + sta)
 
 
 # Lets start by using a station list and then move to a 
@@ -569,13 +569,13 @@ if __name__ == "__main__":
                     curlochorizontal = st.select(location=curloc)
                     curlochorizontal.sort(['channel'])
                     if debug:
-                        print "Here are the number of traces:" + str(len(curlochorizontal)) + \
-                            " which should be 2"
+                        print("Here are the number of traces:" + str(len(curlochorizontal)) + \
+                            " which should be 2")
                         print(curlochorizontal)
                     azi1=getorientation(curlochorizontal[0], sp)
                     azi2=getorientation(curlochorizontal[1], sp)   
                     if debug:
-                        print "Here is the azimuth" + str(azi1) + ' ' + str(azi2)
+                        print("Here is the azimuth" + str(azi1) + ' ' + str(azi2))
                     curlochorizontal = choptocommon(curlochorizontal)
                     try:
                         stF += rotatehorizontal(curlochorizontal, azi1, azi2)    
